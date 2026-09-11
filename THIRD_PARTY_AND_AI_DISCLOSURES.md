@@ -5,14 +5,14 @@ Maintained throughout development for the Nerdy AI Hackathon Challenge.
 ## AI assistance
 
 - **Claude (Anthropic)** was used as a coding assistant to help write this application.
-- **Claude `claude-sonnet-5`** is called at runtime, server-side only, for exactly one job:
-  reading the child's free-text explanation and classifying which *facets* of a concept it
-  expresses. It never renders world state, never decides whether a fix is correct, and never
-  decides mastery — all of that is deterministic engine code (`src/lib/worlds`, `src/lib/mastery.ts`).
-  Every model response is validated with Zod (`src/lib/schemas.ts`); on any failure the app falls
-  back to a deterministic keyword classifier (`src/lib/hypothesis/classify-local.ts`) and stays
-  fully playable with no API key.
-- Claude `claude-sonnet-5` is also used, optionally, to rephrase the deterministic Tutor Handoff
+- **OpenAI `gpt-4o-mini`** (configurable via `OPENAI_MODEL`) is called at runtime, server-side only,
+  for exactly one job: reading the child's free-text explanation and classifying which *facets* of
+  a concept it expresses. It never renders world state, never decides whether a fix is correct, and
+  never decides mastery — all of that is deterministic engine code (`src/lib/worlds`,
+  `src/lib/mastery.ts`). Every model response is validated with Zod (`src/lib/schemas.ts`); on any
+  failure the app falls back to a deterministic keyword classifier
+  (`src/lib/hypothesis/classify-local.ts`) and stays fully playable with no API key.
+- The same OpenAI model is also used, optionally, to rephrase the deterministic Tutor Handoff
   Report into tutor-friendly prose. The structured findings are unchanged; a template fallback is
   always present.
 
@@ -22,7 +22,7 @@ Maintained throughout development for the Nerdy AI Hackathon Challenge.
 |---|---|---|
 | next | MIT | app framework |
 | react, react-dom | MIT | UI |
-| @anthropic-ai/sdk | MIT | server-side Claude calls |
+| openai | Apache-2.0 | server-side GPT calls |
 | zod | MIT | schema validation of all external/AI data |
 | zustand | MIT | game state |
 | framer-motion | MIT | animation |

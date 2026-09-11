@@ -31,7 +31,7 @@ counterexample that exposes the boundary of a child's understanding.**
 
 - A deterministic engine (`src/lib/worlds`, `src/lib/mastery.ts`) owns each concept as a set of
   **facets**. For fair sharing: *equal groups*, *use all of it*, *the amount depends on the total*.
-- The LLM (`claude-sonnet-5`, server-side, `src/lib/ai/analyze-hypothesis.ts`) only reads the
+- The LLM (`gpt-4o-mini` by default, server-side, `src/lib/ai/analyze-hypothesis.ts`) only reads the
   child's sentence and marks which facets it covers. Zod-validated; deterministic keyword fallback
   (`src/lib/hypothesis/classify-local.ts`) means it runs fully offline with no API key.
 - The **selector** (`src/lib/hypothesis/select.ts`) picks the authored world template whose
@@ -57,8 +57,9 @@ npm install
 npm run dev        # http://localhost:3000
 ```
 
-Optional: put `ANTHROPIC_API_KEY=...` in `.env.local` to use Claude for hypothesis classification
-and the tutor report. Without it, everything still works on the deterministic fallback.
+Optional: put `OPENAI_API_KEY=...` in `.env.local` to use GPT for hypothesis classification
+and the tutor report (defaults to `gpt-4o-mini`; override with `OPENAI_MODEL`). Without it,
+everything still works on the deterministic fallback.
 
 ```bash
 npm test           # engine unit tests (vitest)

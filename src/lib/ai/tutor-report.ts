@@ -1,6 +1,6 @@
 import "server-only";
 import type { Report } from "@/lib/report";
-import { firstText, getAnthropic, hasAnthropicKey, RB_MODEL } from "./anthropic";
+import { getOpenAI, hasOpenAIKey, RB_MODEL } from "./openai";
 
 export interface NarrateResult {
   note: string;
@@ -17,11 +17,11 @@ const SYSTEM = [
   "a game where kids spot what's broken in a scene, fix it, then say the rule in their own words while the",
   "AI generates counterexamples that test their rule.",
   "Use ONLY the facts given. No scores, no invented detail, no praise inflation.",
-  "3-5 sentences, warm, specific, tutor-to-tutor. Plain text only.",
+  "3-5 sentences, warm, specific, tutor-to-tutor. Plain text only, no markdown.",
 ].join("\n");
 
 export async function narrateReport(report: Report): Promise<NarrateResult> {
-  if (!hasAnthropicKey()) return { note: fallback(report), source: "fallback" };
+  if (!hasOpenAIKey()) return { note: fallback(report), source: "fallback" };
   try {
     const facts = [
       `Regions cracked: ${report.regionsCracked}.`,
@@ -34,14 +34,17 @@ export async function narrateReport(report: Report): Promise<NarrateResult> {
       ),
     ].join("\n");
 
-    const res = await getAnthropic().messages.create({
+    const res = await getOpenAI().chat.completions.create({
       model: RB_MODEL,
       max_tokens: 400,
-      system: SYSTEM,
-      output_config: { effort: "low" },
-      messages: [{ role: "user", content: facts }],
+      temperature: 0.4,
+      messages: [
+        { role: "system", content: SYSTEM },
+        { role: "user", content: facts },
+      ],
     });
-    const note = firstText(res).trim();
+
+    const note = (res.choices[0]?.message?.content ?? "").trim();
     return note ? { note, source: "llm" } : { note: fallback(report), source: "fallback" };
   } catch {
     return { note: fallback(report), source: "fallback" };

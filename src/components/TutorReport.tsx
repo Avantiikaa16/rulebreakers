@@ -90,7 +90,7 @@ export function TutorReport() {
             <p className="mt-1.5 text-[15px] leading-relaxed">{note ?? report.overall}</p>
             {source === "llm" && (
               <p className="mt-1 text-[11px] text-ink-dim">
-                Phrased by Claude from the engine&rsquo;s findings — no assessment added.
+                Phrased by AI from the engine&rsquo;s findings — no assessment added.
               </p>
             )}
           </section>
