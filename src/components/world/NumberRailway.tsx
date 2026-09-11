@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import type { SequenceWorld } from "@/lib/types";
 import { sequenceFixed } from "@/lib/worlds/sequence";
 import { playCue } from "@/lib/sound";
@@ -19,6 +19,7 @@ export function NumberRailway({
 }) {
   const [selected, setSelected] = useState<number | null>(null);
   const running = sequenceFixed(world);
+  const reduce = useReducedMotion();
 
   const pick = (i: number) => {
     if (!interactive) return;
@@ -52,7 +53,17 @@ export function NumberRailway({
                 onClick={() => pick(i)}
                 aria-label={missing ? `Empty car ${i + 1}` : `Car ${i + 1}, number ${t}`}
                 className="relative grid h-16 w-16 place-items-center rounded-t-xl rounded-b-md border-2 text-xl font-extrabold disabled:opacity-100"
-                animate={isSel ? { y: -8 } : { y: 0 }}
+                animate={
+                  isSel
+                    ? { y: -8 }
+                    : reduce || !interactive
+                      ? { y: 0 }
+                      : missing
+                        ? { y: [0, -6, 0], rotate: [0, -4, 4, 0] }
+                        : { y: [0, -2, 0] }
+                }
+                transition={{ duration: missing ? 0.9 : 2.2, repeat: Infinity, delay: i * 0.12, ease: "easeInOut" }}
+                whileTap={interactive ? { scale: 0.92 } : {}}
                 style={{
                   borderColor: isSel ? "#fff" : missing ? "var(--challenge)" : "rgba(0,0,0,0.3)",
                   background: missing

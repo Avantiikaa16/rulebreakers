@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import type { GroupsWorld } from "@/lib/types";
 import { playCue } from "@/lib/sound";
 
@@ -46,12 +46,14 @@ export function DragonBakery({
         {world.groups.map((count, i) => (
           <DragonZone
             key={i}
+            index={i}
             name={world.characters[i]}
             characterGlyph={world.characterGlyph}
             itemGlyph={world.itemGlyph}
             count={count}
             held={heldFrom === i}
             armed={interactive && heldFrom !== null && heldFrom !== i}
+            idle={interactive && heldFrom === null}
             interactive={interactive}
             onClick={() => zoneClick(i)}
           />
@@ -102,26 +104,31 @@ export function DragonBakery({
 }
 
 function DragonZone({
+  index,
   name,
   characterGlyph,
   itemGlyph,
   count,
   held,
   armed,
+  idle,
   interactive,
   onClick,
 }: {
+  index: number;
   name: string;
   characterGlyph: string;
   itemGlyph: string;
   count: number;
   held: boolean;
   armed: boolean;
+  idle: boolean;
   interactive: boolean;
   onClick: () => void;
 }) {
+  const reduce = useReducedMotion();
   return (
-    <button
+    <motion.button
       type="button"
       disabled={!interactive}
       onClick={onClick}
@@ -131,6 +138,17 @@ function DragonZone({
         borderColor: held ? "var(--think)" : armed ? "var(--supported)" : "var(--line)",
         background: held ? "rgba(255,196,77,0.12)" : "var(--bg-card)",
       }}
+      animate={
+        reduce
+          ? {}
+          : armed
+            ? { scale: [1, 1.05, 1], boxShadow: ["0 0 0px var(--supported)", "0 0 16px var(--supported)", "0 0 0px var(--supported)"] }
+            : idle
+              ? { y: [0, -3, 0] }
+              : {}
+      }
+      transition={{ duration: armed ? 0.8 : 2.6, repeat: Infinity, ease: "easeInOut", delay: idle ? index * 0.25 : 0 }}
+      whileTap={interactive ? { scale: 0.94 } : {}}
     >
       <motion.span className="text-4xl" aria-hidden animate={held ? { rotate: [0, -8, 8, 0] } : {}}>
         {characterGlyph}
@@ -159,6 +177,6 @@ function DragonZone({
           ))}
         </AnimatePresence>
       </div>
-    </button>
+    </motion.button>
   );
 }

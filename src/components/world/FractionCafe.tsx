@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import type { PartitionWorld } from "@/lib/types";
 import { TICKS, sliceWidths } from "@/lib/worlds/partition";
 import { playCue } from "@/lib/sound";
@@ -18,6 +18,7 @@ export function FractionCafe({
   onChange: (patch: Partial<Pick<PartitionWorld, "cuts" | "end">>) => void;
   showEnd?: boolean;
 }) {
+  const reduce = useReducedMotion();
   const cuts = [...world.cuts].filter((c) => c > 0 && c < world.end).sort((a, b) => a - b);
   const widths = sliceWidths(world);
   const d = world.target.denominator;
@@ -45,7 +46,11 @@ export function FractionCafe({
       </p>
 
       {/* bar */}
-      <div className="relative h-16 select-none rounded-xl border-2 border-line bg-bg-raised">
+      <motion.div
+        className="relative h-16 select-none rounded-xl border-2 border-line bg-bg-raised"
+        animate={interactive && !reduce ? { boxShadow: ["0 0 0px var(--think)", "0 0 14px var(--think)", "0 0 0px var(--think)"] } : {}}
+        transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+      >
         {widths.map((w, i) => {
           const left = ([0, ...cuts][i] ?? 0);
           return (
@@ -91,7 +96,25 @@ export function FractionCafe({
                 />
               </button>
             ))}
-      </div>
+      </motion.div>
+
+      {/* visible tap-point markers so kids know exactly where they can cut */}
+      {interactive && (
+        <div className="relative h-3">
+          {Array.from({ length: TICKS - 1 }, (_, i) => i + 1)
+            .filter((pos) => pos < world.end)
+            .map((pos, k) => (
+              <motion.span
+                key={pos}
+                className="absolute top-0 h-2.5 w-2.5 -translate-x-1/2 rounded-full"
+                style={{ left: `${pct(pos)}%`, background: cuts.includes(pos) ? "var(--supported)" : "var(--think)" }}
+                animate={reduce ? {} : { y: [0, -4, 0], opacity: [0.6, 1, 0.6] }}
+                transition={{ duration: 1.4, repeat: Infinity, delay: k * 0.15, ease: "easeInOut" }}
+                aria-hidden
+              />
+            ))}
+        </div>
+      )}
 
       {interactive && (
         <div className="flex flex-col items-center gap-2 text-sm text-ink-dim">

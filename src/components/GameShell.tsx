@@ -106,10 +106,13 @@ function RuleTracker() {
       {facets.map((f) => {
         const has = model.covered.includes(f.facet);
         return (
-          <span
-            key={f.facet}
+          <motion.span
+            key={`${f.facet}-${has}`}
             title={f.kidRule}
             className="h-2.5 w-2.5 rounded-full"
+            initial={has ? { scale: 0 } : false}
+            animate={{ scale: 1 }}
+            transition={{ type: "spring", stiffness: 420, damping: 14 }}
             style={{
               background: has ? "var(--supported)" : "var(--line)",
               boxShadow: has ? "0 0 8px var(--supported)" : "none",
