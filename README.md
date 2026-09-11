@@ -1,36 +1,75 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# RuleBreakers
 
-## Getting Started
+**Spot what's wrong. Figure out the rule. Fix it.**
 
-First, run the development server:
+A K–5 math game for the Nerdy AI Hackathon Challenge. Every math app starts the same way —
+*here is a question, find the answer.* RuleBreakers does the opposite: the child is dropped into a
+small broken world with **no question**, and has to notice what's wrong, discover the hidden rule,
+repair the world, and explain how they knew. Then the AI builds the next world specifically to test
+the rule they just stated.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## The loop
+
+```
+NOTICE  something isn't right
+  ↓
+DISCOVER  the hidden mathematical rule
+  ↓
+FIX  manipulate the world
+  ↓
+EXPLAIN  tell Sy why it was wrong
+  ↓
+WORLD MUTATES  the AI builds the smallest counterexample that tests your rule
+  ↓
+GENERALIZE  your rule levels up until it's complete
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## The Hypothesis Engine
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The interesting AI job here isn't generating math problems — it's **inventing the smallest
+counterexample that exposes the boundary of a child's understanding.**
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- A deterministic engine (`src/lib/worlds`, `src/lib/mastery.ts`) owns each concept as a set of
+  **facets**. For fair sharing: *equal groups*, *use all of it*, *the amount depends on the total*.
+- The LLM (`claude-sonnet-5`, server-side, `src/lib/ai/analyze-hypothesis.ts`) only reads the
+  child's sentence and marks which facets it covers. Zod-validated; deterministic keyword fallback
+  (`src/lib/hypothesis/classify-local.ts`) means it runs fully offline with no API key.
+- The **selector** (`src/lib/hypothesis/select.ts`) picks the authored world template whose
+  parameters isolate a missing facet.
+- Whether a fix is correct, and whether the child has generalised, is decided by code — never the model.
 
-## Learn More
+Some worlds aren't broken at all. If a child always changes something, they've learned the wrong
+lesson — so a correct answer is sometimes "nothing is wrong here."
 
-To learn more about Next.js, take a look at the following resources:
+## Regions
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Region | Concept | Facets |
+|---|---|---|
+| 🍪 Dragon Bakery | fair shares / division | equal groups · use all of it · depends on the total |
+| 🍫 Fraction Café | equal partition / fractions | equal pieces · right number of pieces · covers the whole |
+| 🚂 Number Railway | skip-counting patterns | constant step · which step · keeps going |
+| 🦹 Glitch Boss | all three at once | find every glitch — or spot that one isn't broken |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Run it
 
-## Deploy on Vercel
+```bash
+npm install
+npm run dev        # http://localhost:3000
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Optional: put `ANTHROPIC_API_KEY=...` in `.env.local` to use Claude for hypothesis classification
+and the tutor report. Without it, everything still works on the deterministic fallback.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm test           # engine unit tests (vitest)
+npm run build
+```
+
+## Nerdy relevance
+
+RuleBreakers watches a child's mental model evolve and captures it as a **reasoning profile**
+(`/report`) — which facets they discovered, in what order, in their own words. In a Live + AI
+learning system, that's what a tutor reads before the session: not what the learner got wrong, but
+how they think and what moved them forward.
+
+See `THIRD_PARTY_AND_AI_DISCLOSURES.md` for licenses and AI-use disclosure.
