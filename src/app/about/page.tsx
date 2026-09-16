@@ -45,7 +45,7 @@ export default function About() {
             <p className="text-ink-dim">
               We don&rsquo;t ask the model to invent math problems. A deterministic engine owns every
               concept as a set of <em>facets</em> — for fair sharing: equal groups, use all of it, the
-              amount depends on the total. The LLM (<code>gpt-4o-mini</code>, server-side) only reads
+              amount depends on the total. The LLM (Groq/Llama or OpenAI, server-side) only reads
               the child&rsquo;s sentence and marks which facets it covers. The engine then picks the
               authored counterexample that isolates a missing facet — the smallest world that
               distinguishes real understanding from the child&rsquo;s current wording. Every world&rsquo;s

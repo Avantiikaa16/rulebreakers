@@ -4,21 +4,45 @@ import OpenAI from "openai";
 /**
  * RuleBreakers only ever calls the model server-side. The model reads the
  * child's words; it never renders worlds, checks fixes, or decides mastery.
+ *
+ * Provider is picked automatically, in order: Groq (free tier, OpenAI-compatible
+ * API) → OpenAI → offline deterministic fallback. Whichever key is present wins;
+ * if both are set, Groq is preferred since it needs no billing to run.
  */
 
-export const RB_MODEL = process.env.OPENAI_MODEL ?? "gpt-4o-mini";
+type Provider = "groq" | "openai" | "none";
+
+function provider(): Provider {
+  if (process.env.GROQ_API_KEY?.trim()) return "groq";
+  if (process.env.OPENAI_API_KEY?.trim()) return "openai";
+  return "none";
+}
+
+export const RB_MODEL = (() => {
+  const p = provider();
+  if (p === "groq") return process.env.GROQ_MODEL ?? "llama-3.3-70b-versatile";
+  return process.env.OPENAI_MODEL ?? "gpt-4o-mini";
+})();
 
 export function hasOpenAIKey(): boolean {
-  return Boolean(process.env.OPENAI_API_KEY && process.env.OPENAI_API_KEY.trim());
+  return provider() !== "none";
 }
 
 let cached: OpenAI | null = null;
+let cachedFor: Provider | null = null;
 
 export function getOpenAI(): OpenAI {
-  if (!hasOpenAIKey()) {
-    throw new Error("OPENAI_API_KEY is not set");
+  const p = provider();
+  if (p === "none") {
+    throw new Error("Neither GROQ_API_KEY nor OPENAI_API_KEY is set");
   }
-  cached ??= new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+  if (cached && cachedFor === p) return cached;
+
+  cached =
+    p === "groq"
+      ? new OpenAI({ apiKey: process.env.GROQ_API_KEY, baseURL: "https://api.groq.com/openai/v1" })
+      : new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+  cachedFor = p;
   return cached;
 }
 

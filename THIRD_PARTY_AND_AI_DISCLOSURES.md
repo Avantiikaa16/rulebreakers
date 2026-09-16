@@ -5,14 +5,16 @@ Maintained throughout development for the Nerdy AI Hackathon Challenge.
 ## AI assistance
 
 - **Claude (Anthropic)** was used as a coding assistant to help write this application.
-- **OpenAI `gpt-4o-mini`** (configurable via `OPENAI_MODEL`) is called at runtime, server-side only,
-  for exactly one job: reading the child's free-text explanation and classifying which *facets* of
-  a concept it expresses. It never renders world state, never decides whether a fix is correct, and
-  never decides mastery — all of that is deterministic engine code (`src/lib/worlds`,
-  `src/lib/mastery.ts`). Every model response is validated with Zod (`src/lib/schemas.ts`); on any
-  failure the app falls back to a deterministic keyword classifier
-  (`src/lib/hypothesis/classify-local.ts`) and stays fully playable with no API key.
-- The same OpenAI model is also used, optionally, to rephrase the deterministic Tutor Handoff
+- At runtime, server-side only, one LLM call classifies which *facets* of a concept the child's
+  free-text explanation expresses — nothing else. The provider is selected automatically:
+  **Groq** (Llama, configurable via `GROQ_MODEL`, default `llama-3.3-70b-versatile`) if
+  `GROQ_API_KEY` is set, otherwise **OpenAI** (`gpt-4o-mini` by default, configurable via
+  `OPENAI_MODEL`) if `OPENAI_API_KEY` is set. The model never renders world state, never decides
+  whether a fix is correct, and never decides mastery — all of that is deterministic engine code
+  (`src/lib/worlds`, `src/lib/mastery.ts`). Every model response is validated with Zod
+  (`src/lib/schemas.ts`); on any failure the app falls back to a deterministic keyword classifier
+  (`src/lib/hypothesis/classify-local.ts`) and stays fully playable with no API key at all.
+- The same LLM call is also used, optionally, to rephrase the deterministic Tutor Handoff
   Report into tutor-friendly prose. The structured findings are unchanged; a template fallback is
   always present.
 
@@ -22,7 +24,7 @@ Maintained throughout development for the Nerdy AI Hackathon Challenge.
 |---|---|---|
 | next | MIT | app framework |
 | react, react-dom | MIT | UI |
-| openai | Apache-2.0 | server-side GPT calls |
+| openai | Apache-2.0 | server-side LLM calls (used as the client for both Groq and OpenAI, since Groq's API is OpenAI-compatible) |
 | zod | MIT | schema validation of all external/AI data |
 | zustand | MIT | game state |
 | framer-motion | MIT | animation |

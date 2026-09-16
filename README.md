@@ -31,7 +31,8 @@ counterexample that exposes the boundary of a child's understanding.**
 
 - A deterministic engine (`src/lib/worlds`, `src/lib/mastery.ts`) owns each concept as a set of
   **facets**. For fair sharing: *equal groups*, *use all of it*, *the amount depends on the total*.
-- The LLM (`gpt-4o-mini` by default, server-side, `src/lib/ai/analyze-hypothesis.ts`) only reads the
+- The LLM (Groq/Llama if `GROQ_API_KEY` is set, else OpenAI `gpt-4o-mini`; server-side,
+  `src/lib/ai/analyze-hypothesis.ts`) only reads the
   child's sentence and marks which facets it covers. Zod-validated; deterministic keyword fallback
   (`src/lib/hypothesis/classify-local.ts`) means it runs fully offline with no API key.
 - The **selector** (`src/lib/hypothesis/select.ts`) picks the authored world template whose
@@ -57,9 +58,10 @@ npm install
 npm run dev        # http://localhost:3000
 ```
 
-Optional: put `OPENAI_API_KEY=...` in `.env.local` to use GPT for hypothesis classification
-and the tutor report (defaults to `gpt-4o-mini`; override with `OPENAI_MODEL`). Without it,
-everything still works on the deterministic fallback.
+Optional: put `GROQ_API_KEY=...` (free, console.groq.com) or `OPENAI_API_KEY=...` in
+`.env.local` to use a real LLM for hypothesis classification and the tutor report — Groq is
+tried first if both are set. Without either, everything still works on the deterministic
+fallback.
 
 ```bash
 npm test           # engine unit tests (vitest)
