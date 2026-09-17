@@ -135,7 +135,9 @@ function PalmTree({ side, reduce }: { side: "left" | "right"; reduce: boolean })
       className="absolute"
       style={{
         [side]: "-2%",
-        bottom: "max(2%, 14px)", // lifted off the raw viewport edge so the base never looks sliced off
+        // planted on the shore strip itself, not just nudged off the raw edge —
+        // a couple of % / 14px was imperceptible on short/wide viewports
+        bottom: "max(6%, 34px)",
         width: "34vw",
         maxWidth: 260,
         transformOrigin: "bottom center",
@@ -145,7 +147,7 @@ function PalmTree({ side, reduce }: { side: "left" | "right"; reduce: boolean })
       transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
     >
       <svg viewBox="0 0 200 220" width="100%" height="auto">
-        <ellipse cx="96" cy="214" rx="30" ry="8" fill="#4a2f16" opacity="0.35" />
+        <ellipse cx="96" cy="214" rx="34" ry="9" fill="#4a2f16" opacity="0.4" />
         <path d="M96 218 C 92 150 100 90 108 40" stroke="#6b4423" strokeWidth="11" fill="none" strokeLinecap="round" />
         <g fill="#2f9e5c">
           <path d="M108 40 C 60 20 30 40 10 20 C 40 55 75 60 105 55 Z" />
