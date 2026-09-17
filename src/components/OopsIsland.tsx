@@ -22,8 +22,8 @@ export function OopsIsland() {
   return (
     <>
       <IslandSky restored={allDone} />
-      <main className="mx-auto flex min-h-screen w-full max-w-md flex-col gap-5 px-4 pb-16 pt-6 sm:px-6">
-        <header className="ql-card flex items-center justify-between px-4 py-3">
+      <main className="mx-auto flex min-h-screen w-full max-w-md flex-col gap-5 px-4 pb-16 pt-6 sm:px-6 lg:max-w-5xl">
+        <header className="ql-card flex items-center justify-between px-4 py-3 lg:mx-auto lg:w-full lg:max-w-md">
           <div className="flex items-center gap-2">
             <Pixel state="idle" size={44} />
             <div>
@@ -37,12 +37,12 @@ export function OopsIsland() {
         <motion.p
           initial={{ opacity: 0, y: -6 }}
           animate={{ opacity: 1, y: 0 }}
-          className="ql-card px-4 py-2.5 text-center text-sm font-semibold"
+          className="ql-card px-4 py-2.5 text-center text-sm font-semibold lg:mx-auto lg:w-full lg:max-w-md"
         >
           🕵️ Something is broken in every place. Find the hidden rule and fix the world!
         </motion.p>
 
-        <ol className="flex flex-col gap-4">
+        <ol className="grid grid-cols-1 gap-4 lg:grid-cols-3">
           {REGIONS.map((r, i) => {
             const complete = ready && done.includes(r.concept);
             const color = TOKEN[r.color];
@@ -53,14 +53,15 @@ export function OopsIsland() {
                 initial={{ opacity: 0, y: 24, scale: 0.9 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 transition={{ delay: i * 0.1, type: "spring", stiffness: 260, damping: 20 }}
+                className="lg:h-full"
               >
                 <Link
                   href={`/region/${r.slug}`}
-                  className="ql-card flex items-center gap-4 p-4"
+                  className="ql-card flex items-center gap-4 p-4 lg:h-full lg:flex-col lg:justify-start lg:gap-3 lg:p-6 lg:text-center"
                   style={{ borderColor: complete ? "var(--supported)" : isNext ? color : "rgba(255,255,255,0.14)" }}
                 >
                   <motion.span
-                    className="grid h-20 w-20 shrink-0 place-items-center rounded-full text-4xl"
+                    className="grid h-20 w-20 shrink-0 place-items-center rounded-full text-4xl lg:h-24 lg:w-24 lg:text-5xl"
                     style={{
                       background: `radial-gradient(circle at 32% 28%, ${color}, ${color}55 70%)`,
                       boxShadow: `0 6px 0 -1px rgba(0,0,0,0.25), 0 0 0 4px rgba(255,255,255,0.12), 0 0 24px ${color}88`,
@@ -77,8 +78,8 @@ export function OopsIsland() {
                   >
                     {r.emoji}
                   </motion.span>
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-center gap-2">
+                  <div className="min-w-0 flex-1 lg:flex-none">
+                    <div className="flex items-center gap-2 lg:justify-center">
                       <span className="text-lg font-extrabold">{r.name}</span>
                       {complete && (
                         <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} aria-label="cracked" className="text-xl">
@@ -95,7 +96,7 @@ export function OopsIsland() {
                     </p>
                   </div>
                   <motion.span
-                    className="text-2xl text-ink-dim"
+                    className="text-2xl text-ink-dim lg:hidden"
                     animate={isNext && !reduce ? { x: [0, 5, 0] } : {}}
                     transition={{ duration: 1, repeat: Infinity }}
                   >
@@ -112,7 +113,7 @@ export function OopsIsland() {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: [1, 1.03, 1] }}
             transition={{ scale: { duration: 1.6, repeat: Infinity } }}
-            className="ql-card p-4 text-center"
+            className="ql-card p-4 text-center lg:mx-auto lg:w-full lg:max-w-md"
             style={{ borderColor: "var(--mastery)" }}
           >
             <p className="text-lg font-extrabold">🎉 Every rule cracked — but The Glitch is loose!</p>
@@ -122,14 +123,14 @@ export function OopsIsland() {
           </motion.div>
         ) : (
           <div
-            className="rounded-3xl border-2 border-dashed p-4 text-center text-sm font-semibold text-ink-dim"
+            className="rounded-3xl border-2 border-dashed p-4 text-center text-sm font-semibold text-ink-dim lg:mx-auto lg:w-full lg:max-w-md"
             style={{ borderColor: "rgba(255,255,255,0.35)", background: "rgba(20,26,48,0.55)", backdropFilter: "blur(8px)" }}
           >
             🔒 The Glitch Boss unlocks when all three places are fixed.
           </div>
         )}
 
-        <footer className="flex items-center justify-between gap-2 pt-2 text-xs">
+        <footer className="flex items-center justify-between gap-2 pt-2 text-xs lg:mx-auto lg:w-full lg:max-w-md">
           <Link href="/about" className="rounded-full bg-bg-raised/90 px-3 py-1.5 font-semibold text-ink-dim underline">
             For grown-ups &amp; judges
           </Link>

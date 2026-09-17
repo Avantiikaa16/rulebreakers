@@ -54,13 +54,13 @@ export function IslandSky({ restored = false }: { restored?: boolean }) {
         [0, 1].map((i) => (
           <motion.div
             key={i}
-            className="absolute text-xl"
+            className="absolute"
             style={{ top: `${14 + i * 9}%` }}
             initial={{ x: "-10vw" }}
             animate={{ x: "110vw" }}
             transition={{ duration: 26 + i * 8, repeat: Infinity, ease: "linear", delay: i * 9 }}
           >
-            <span style={{ color: "rgba(30,50,60,0.55)" }}>⌒⌒</span>
+            <Bird />
           </motion.div>
         ))}
 
@@ -114,6 +114,20 @@ export function IslandSky({ restored = false }: { restored?: boolean }) {
           />
         ))}
     </div>
+  );
+}
+
+/** A small gull silhouette with flapping wings — replaces the old "⌒⌒" text glyph. */
+function Bird() {
+  const wingDown = "M14 7 Q9 1 1 5 Q7 6 14 7 Q21 6 27 5 Q19 1 14 7 Z";
+  const wingUp = "M14 7 Q9 5 1 7 Q7 7 14 7 Q21 7 27 7 Q19 5 14 7 Z";
+  return (
+    <svg width="28" height="14" viewBox="0 0 28 14" fill="rgba(30,50,60,0.55)">
+      <motion.path
+        animate={{ d: [wingDown, wingUp, wingDown] }}
+        transition={{ duration: 0.7, repeat: Infinity, ease: "easeInOut" }}
+      />
+    </svg>
   );
 }
 
