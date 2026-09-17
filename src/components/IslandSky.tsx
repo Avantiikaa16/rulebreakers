@@ -146,7 +146,10 @@ function PalmTree({ side, reduce }: { side: "left" | "right"; reduce: boolean })
       animate={reduce ? {} : { rotate: [0, 1.5, 0, -1.5, 0] }}
       transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
     >
-      <svg viewBox="0 0 200 220" width="100%" height="auto">
+      {/* viewBox starts at y=-65: the upward fronds' control points reach y=-55,
+          which SVG clips flat if the viewBox doesn't extend up there — that was
+          the actual "cut off" look, at the top of the leaves, not the trunk base */}
+      <svg viewBox="0 -65 200 285" width="100%" height="auto">
         <ellipse cx="96" cy="214" rx="34" ry="9" fill="#4a2f16" opacity="0.4" />
         <path d="M96 218 C 92 150 100 90 108 40" stroke="#6b4423" strokeWidth="11" fill="none" strokeLinecap="round" />
         <g fill="#2f9e5c">
