@@ -41,7 +41,7 @@ about what a specific child currently believes, continuously tested against real
     ↓
 ✋ FIX                manipulate the world (or decide it wasn't broken)
     ↓
-🎤 EXPLAIN            tell Sy why, in your own words
+🎤 EXPLAIN            tell Clue why, in your own words
     ↓
 🪄 WORLD MUTATES      the AI builds the smallest counterexample that tests your rule
     ↓
@@ -110,7 +110,7 @@ npm run build
 Next.js 16 (App Router) · TypeScript · Tailwind CSS v4 · Framer Motion · Zustand · Zod ·
 `openai` SDK (used for both Groq and OpenAI, since Groq's API is OpenAI-compatible) ·
 Web Audio API for sound · the browser's native `speechSynthesis` and `SpeechRecognition` for
-Sy's voice and optional voice input. No database — progress and session evidence live in
+Clue's voice and optional voice input. No database — progress and session evidence live in
 the browser's `localStorage` only.
 
 ## Quality bar

@@ -40,7 +40,7 @@ export function ExplanationInput({
           <button
             type="button"
             aria-pressed={speech.listening}
-            aria-label={speech.listening ? "Stop talking to Pixel" : "Talk to Pixel"}
+            aria-label={speech.listening ? "Stop talking to Clue" : "Talk to Clue"}
             disabled={analyzing}
             onClick={() => (speech.listening ? speech.stop() : speech.start())}
             className="grid h-12 w-12 shrink-0 place-items-center rounded-full border-2 text-xl disabled:opacity-40"

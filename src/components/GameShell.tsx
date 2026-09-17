@@ -165,7 +165,7 @@ function IntroScreen() {
       <h1 className="mt-3 text-2xl font-bold">{def.region}</h1>
       <p className="mt-2 text-ink-dim">
         No question to answer. Look at each little world, figure out what&rsquo;s broken, and fix it.
-        Then tell Sy how you knew.
+        Then tell Clue how you knew.
       </p>
       <button className="ql-btn mt-5 bg-explore text-[#0b1020]" onClick={beginFirstWorld}>
         Enter →
@@ -279,8 +279,8 @@ function ExplainScreen() {
           value={text}
           onChange={setText}
           onSubmit={() => analyzeAndSubmit(text.trim())}
-          submitLabel="Tell Sy →"
-          busyLabel="Sy is thinking…"
+          submitLabel="Tell Clue →"
+          busyLabel="Clue is thinking…"
           analyzing={analyzing}
           placeholder="e.g. everyone has to have the same"
         />

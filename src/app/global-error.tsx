@@ -17,7 +17,7 @@ export default function GlobalError({ reset }: { error: Error; reset: () => void
       >
         <div>
           <p style={{ fontSize: "2.5rem" }}>🛠️</p>
-          <h1>Sy needs a moment</h1>
+          <h1>Clue needs a moment</h1>
           <p style={{ opacity: 0.7 }}>Something went wobbly. Let&rsquo;s try again.</p>
           <button
             onClick={reset}

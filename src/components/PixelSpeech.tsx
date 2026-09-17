@@ -45,7 +45,7 @@ export function PixelSpeech({
         className="absolute -top-2 left-1/2 h-4 w-4 -translate-x-1/2 rotate-45 border-l-2 border-t-2 bg-bg-card"
         style={{ borderColor: color }}
       />
-      <span className="mb-1 block text-[11px] uppercase tracking-widest text-ink-dim">Sy</span>
+      <span className="mb-1 block text-[11px] uppercase tracking-widest text-ink-dim">Clue</span>
       {children}
     </motion.div>
   );

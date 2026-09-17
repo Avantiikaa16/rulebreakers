@@ -41,7 +41,7 @@ function NameScreen() {
           transition={{ type: "spring", stiffness: 260, damping: 20 }}
           className="ql-card w-full p-6"
         >
-          <h1 className="text-xl font-extrabold">Hi! I&rsquo;m Sy 👋</h1>
+          <h1 className="text-xl font-extrabold">Hi! I&rsquo;m Clue 👋</h1>
           <p className="mt-1 text-sm text-ink-dim">What should I call you, explorer?</p>
 
           <input

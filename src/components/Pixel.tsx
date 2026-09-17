@@ -24,14 +24,14 @@ const GLOW: Record<PixelState, string> = {
 };
 
 const CAPTION: Record<PixelState, string> = {
-  idle: "Pixel is waiting",
-  listening: "Pixel is listening",
-  thinking: "Pixel is thinking",
-  confused: "Pixel is puzzled",
-  trying: "Pixel is trying its rule",
-  realizing: "Pixel notices a mismatch",
-  learning: "Pixel is learning",
-  celebrating: "Pixel is celebrating",
+  idle: "Clue is waiting",
+  listening: "Clue is listening",
+  thinking: "Clue is thinking",
+  confused: "Clue is puzzled",
+  trying: "Clue is trying its rule",
+  realizing: "Clue notices a mismatch",
+  learning: "Clue is learning",
+  celebrating: "Clue is celebrating",
 };
 
 export function Pixel({
