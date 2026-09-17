@@ -36,7 +36,7 @@ export async function narrateReport(report: Report): Promise<NarrateResult> {
 
     const res = await getOpenAI().chat.completions.create({
       model: RB_MODEL,
-      max_tokens: 400,
+      max_tokens: 800, // reasoning models spend part of this on chain-of-thought first
       temperature: 0.4,
       messages: [
         { role: "system", content: SYSTEM },

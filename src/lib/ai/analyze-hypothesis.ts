@@ -12,6 +12,7 @@ export interface AnalyzeResult {
 
 function systemPrompt(concept: Concept): string {
   const def = CONCEPTS[concept];
+  const facetNames = def.facets.map((f) => f.facet);
   const facetLines = def.facets
     .map((f) => `- ${f.facet}: the idea that ${f.kidRule}`)
     .join("\n");
@@ -24,14 +25,15 @@ function systemPrompt(concept: Concept): string {
     facetLines,
     "",
     "Rules:",
-    "- 'covers' = parts they clearly said. 'missing' = the rest.",
+    `- 'covers' and 'missing' must ONLY contain these exact words: ${facetNames.join(", ")}. Never invent other words.`,
+    "- 'covers' = parts they clearly said. 'missing' = the rest of the list above.",
     "- Only mark a part as covered if the words really show it — not if you're being generous.",
     "- 'mentionsSpecificNumber' = true if they named a fixed amount ('everyone needs four') without any sense that it depends on the total.",
     "- 'childSafeParaphrase' = their rule in <=14 kind words, no praise, no correction.",
     "",
     "Reply with ONLY this JSON object, no prose, no markdown fences:",
-    '{"raw": string, "concept": string, "covers": string[], "missing": string[],',
-    ' "mentionsSpecificNumber": boolean, "childSafeParaphrase": string, "confidence": number 0-1}',
+    '{"covers": string[], "missing": string[], "mentionsSpecificNumber": boolean,',
+    ' "childSafeParaphrase": string, "confidence": number 0-1}',
   ].join("\n");
 }
 
@@ -53,11 +55,20 @@ async function callModel(text: string, concept: Concept, repair: boolean): Promi
     messages,
     response_format: { type: "json_object" },
     temperature: 0.2,
-    max_tokens: 400,
+    // generous headroom: reasoning models (e.g. Groq's gpt-oss) spend most of this
+    // budget on internal chain-of-thought before the actual JSON answer
+    max_tokens: 800,
   });
 
-  const raw = res.choices[0]?.message?.content ?? "";
-  return hypothesisAnalysisSchema.parse(extractJson(raw));
+  const content = res.choices[0]?.message?.content ?? "";
+  const parsedJson = extractJson(content);
+  // We already know `concept` and `raw` — never trust the model to echo them back verbatim.
+  const withKnownFields = {
+    ...(typeof parsedJson === "object" && parsedJson ? parsedJson : {}),
+    concept,
+    raw: text,
+  };
+  return hypothesisAnalysisSchema.parse(withKnownFields);
 }
 
 /** Never throws — the game always gets a usable analysis. */

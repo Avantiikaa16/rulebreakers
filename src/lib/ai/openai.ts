@@ -20,7 +20,7 @@ function provider(): Provider {
 
 export const RB_MODEL = (() => {
   const p = provider();
-  if (p === "groq") return process.env.GROQ_MODEL ?? "llama-3.3-70b-versatile";
+  if (p === "groq") return process.env.GROQ_MODEL ?? "openai/gpt-oss-20b";
   return process.env.OPENAI_MODEL ?? "gpt-4o-mini";
 })();
 

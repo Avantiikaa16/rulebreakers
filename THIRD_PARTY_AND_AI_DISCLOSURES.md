@@ -7,7 +7,7 @@ Maintained throughout development for the Nerdy AI Hackathon Challenge.
 - **Claude (Anthropic)** was used as a coding assistant to help write this application.
 - At runtime, server-side only, one LLM call classifies which *facets* of a concept the child's
   free-text explanation expresses — nothing else. The provider is selected automatically:
-  **Groq** (Llama, configurable via `GROQ_MODEL`, default `llama-3.3-70b-versatile`) if
+  **Groq** (configurable via `GROQ_MODEL`, default `openai/gpt-oss-20b`) if
   `GROQ_API_KEY` is set, otherwise **OpenAI** (`gpt-4o-mini` by default, configurable via
   `OPENAI_MODEL`) if `OPENAI_API_KEY` is set. The model never renders world state, never decides
   whether a fix is correct, and never decides mastery — all of that is deterministic engine code
