@@ -5,9 +5,11 @@ import Link from "next/link";
 import { loadSessions } from "@/lib/session";
 import { buildReport, type Report } from "@/lib/report";
 import { useHydrated } from "@/lib/useHydrated";
+import { usePlayer } from "@/lib/usePlayer";
 
 export function TutorReport() {
   const hydrated = useHydrated();
+  const player = usePlayer();
   const report = useMemo<Report>(
     () => buildReport(hydrated ? loadSessions() : []),
     [hydrated],
@@ -78,7 +80,8 @@ export function TutorReport() {
             Tutor Handoff — RuleBreakers
           </p>
           <h1 className="mt-1 text-xl font-bold">
-            Learner reasoning profile · {report.regionsCracked} region{report.regionsCracked === 1 ? "" : "s"}
+            {player ? `${player.avatar} ${player.name}’s` : "Learner"} reasoning profile ·{" "}
+            {report.regionsCracked} region{report.regionsCracked === 1 ? "" : "s"}
           </h1>
         </header>
 

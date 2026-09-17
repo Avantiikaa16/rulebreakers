@@ -6,6 +6,8 @@ import { REGIONS } from "@/lib/regions";
 import { CONCEPTS } from "@/lib/concepts";
 import { useCompletedRegions } from "@/lib/useProgress";
 import { useHydrated } from "@/lib/useHydrated";
+import { usePlayer } from "@/lib/usePlayer";
+import { clearPlayer } from "@/lib/player";
 import { resetProgress } from "@/lib/progress";
 import { IslandSky } from "@/components/IslandSky";
 import { SoundToggle } from "@/components/SoundToggle";
@@ -17,6 +19,7 @@ export function OopsIsland() {
   const reduce = useReducedMotion();
   const done = useCompletedRegions();
   const ready = useHydrated();
+  const player = usePlayer();
   const allDone = ready && REGIONS.every((r) => done.includes(r.concept));
 
   return (
@@ -33,6 +36,17 @@ export function OopsIsland() {
           </div>
           <SoundToggle />
         </header>
+
+        {player && (
+          <div className="flex items-center justify-center gap-2 text-xs font-semibold text-ink-dim lg:mx-auto lg:w-full lg:max-w-md">
+            <span>
+              {player.avatar} Hey, {player.name}!
+            </span>
+            <button type="button" onClick={() => clearPlayer()} className="underline">
+              Not you?
+            </button>
+          </div>
+        )}
 
         <motion.p
           initial={{ opacity: 0, y: -6 }}

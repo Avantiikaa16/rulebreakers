@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Fredoka } from "next/font/google";
+import { PlayerGate } from "@/components/PlayerGate";
 import "./globals.css";
 
 const fredoka = Fredoka({
@@ -24,7 +25,9 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${fredoka.variable} h-full`}>
-      <body className="min-h-full">{children}</body>
+      <body className="min-h-full">
+        <PlayerGate>{children}</PlayerGate>
+      </body>
     </html>
   );
 }

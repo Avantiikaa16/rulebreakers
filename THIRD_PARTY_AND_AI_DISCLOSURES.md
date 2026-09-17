@@ -43,8 +43,11 @@ No GPL / LGPL / AGPL / SSPL or other reciprocal-license dependencies.
 ## Data
 
 - No real student data is used. All content is synthetic and authored.
-- No accounts, no personal data collection. Progress and session summaries are stored only in the
-  browser's `localStorage` and never transmitted.
+- No accounts, no personal data collection. The optional "what should I call you?" nickname and
+  avatar picker (`src/lib/player.ts`) is stored only in the browser's `localStorage`, is never sent
+  to any API — including the classification and tutor-report routes — and can be cleared any time
+  via "Not you?" on the island screen. Progress and session summaries are likewise stored only in
+  `localStorage` and never transmitted.
 - No camera, microphone-recording upload, biometric identifiers, or speaker/face identification.
   (Optional speech-to-text uses the browser's on-device Web Speech API for the "how did you know?"
   step; the transcript is editable and only its text is sent to the classification endpoint.)
