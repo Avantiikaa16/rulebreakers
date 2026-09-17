@@ -132,13 +132,21 @@ function PalmTree({ side, reduce }: { side: "left" | "right"; reduce: boolean })
   const flip = side === "right" ? { transform: "scaleX(-1)" } : undefined;
   return (
     <motion.div
-      className="absolute bottom-0"
-      style={{ [side]: "-2%", width: "34vw", maxWidth: 260, transformOrigin: "bottom center", ...flip }}
+      className="absolute"
+      style={{
+        [side]: "-2%",
+        bottom: "max(2%, 14px)", // lifted off the raw viewport edge so the base never looks sliced off
+        width: "34vw",
+        maxWidth: 260,
+        transformOrigin: "bottom center",
+        ...flip,
+      }}
       animate={reduce ? {} : { rotate: [0, 1.5, 0, -1.5, 0] }}
       transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
     >
       <svg viewBox="0 0 200 220" width="100%" height="auto">
-        <path d="M96 220 C 92 150 100 90 108 40" stroke="#6b4423" strokeWidth="10" fill="none" strokeLinecap="round" />
+        <ellipse cx="96" cy="214" rx="30" ry="8" fill="#4a2f16" opacity="0.35" />
+        <path d="M96 218 C 92 150 100 90 108 40" stroke="#6b4423" strokeWidth="11" fill="none" strokeLinecap="round" />
         <g fill="#2f9e5c">
           <path d="M108 40 C 60 20 30 40 10 20 C 40 55 75 60 105 55 Z" />
           <path d="M108 40 C 150 10 180 30 195 10 C 165 50 130 58 108 55 Z" />
