@@ -124,6 +124,7 @@ function Bird() {
   return (
     <svg width="28" height="14" viewBox="0 0 28 14" fill="rgba(30,50,60,0.55)">
       <motion.path
+        initial={{ d: wingDown }}
         animate={{ d: [wingDown, wingUp, wingDown] }}
         transition={{ duration: 0.7, repeat: Infinity, ease: "easeInOut" }}
       />
@@ -163,7 +164,7 @@ function PalmTree({ side, reduce }: { side: "left" | "right"; reduce: boolean })
       {/* viewBox starts at y=-65: the upward fronds' control points reach y=-55,
           which SVG clips flat if the viewBox doesn't extend up there — that was
           the actual "cut off" look, at the top of the leaves, not the trunk base */}
-      <svg viewBox="0 -65 200 285" width="100%" height="auto">
+      <svg viewBox="0 -65 200 285" width="100%" style={{ height: "auto" }}>
         <ellipse cx="96" cy="214" rx="34" ry="9" fill="#4a2f16" opacity="0.4" />
         <path d="M96 218 C 92 150 100 90 108 40" stroke="#6b4423" strokeWidth="11" fill="none" strokeLinecap="round" />
         <g fill="#2f9e5c">
