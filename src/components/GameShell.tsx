@@ -365,7 +365,7 @@ function GeneralizedScreen() {
       <h2 className="text-2xl font-bold" style={{ color: "var(--mastery)" }}>
         You cracked the rule!
       </h2>
-      <p className="max-w-md text-ink-dim">{def.bigIdea}</p>
+      <p className="max-w-md rounded-2xl bg-bg-raised/90 px-4 py-2 text-ink-dim">{def.bigIdea}</p>
 
       <div className="ql-card w-full p-4 text-left">
         <p className="text-[11px] uppercase tracking-widest text-ink-dim">How your thinking grew</p>

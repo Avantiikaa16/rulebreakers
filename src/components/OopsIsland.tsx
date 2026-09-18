@@ -38,7 +38,7 @@ export function OopsIsland() {
         </header>
 
         {player && (
-          <div className="flex items-center justify-center gap-2 text-xs font-semibold text-ink-dim lg:mx-auto lg:w-full lg:max-w-md">
+          <div className="mx-auto flex w-fit items-center gap-2 rounded-full bg-bg-raised/90 px-3 py-1.5 text-xs font-semibold text-ink-dim lg:mx-auto">
             <span>
               {player.avatar} Hey, {player.name}!
             </span>

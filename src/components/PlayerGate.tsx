@@ -95,7 +95,7 @@ function NameScreen() {
 
         <button
           type="button"
-          className="text-xs font-semibold text-ink-dim underline"
+          className="rounded-full bg-bg-raised/90 px-3 py-1.5 text-xs font-semibold text-ink-dim underline"
           onClick={() => go("Explorer")}
         >
           Skip for now
