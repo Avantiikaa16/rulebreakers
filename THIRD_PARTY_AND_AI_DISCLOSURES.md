@@ -1,10 +1,8 @@
 # Third-Party & AI Disclosures — RuleBreakers
 
-Per Nerdy AI Hackathon Challenge terms §7.6.
-
 ## AI assistance
 
-Built with **Claude (Anthropic)** as a coding assistant. At runtime, one server-side LLM call
+Used **Claude (Anthropic)** as a coding assistant. At runtime, one server-side LLM call
 classifies which facets of a concept a child's explanation covers — it never grades and never
 decides game state (`src/lib/worlds`, `src/lib/mastery.ts` do that deterministically). Provider:
 **Groq** if `GROQ_API_KEY` is set, else **OpenAI**, else a deterministic offline classifier

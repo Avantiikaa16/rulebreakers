@@ -4,38 +4,27 @@
 
 **A K–5 math game built for the [Nerdy AI Hackathon Challenge](https://hackathon.nerdy.com/).**
 
-Every math app starts the same way — *here is a question, find the answer.* RuleBreakers does the
-opposite: a child is dropped into a small broken world with **no question at all**. They have to
-notice what's wrong, discover the hidden mathematical rule, repair the world, and explain how they
-knew. Then an AI builds the next world specifically to test the rule they just stated — and
-sometimes nothing is broken at all, because knowing when *not* to "fix" something is part of really
-understanding it.
+Every math app starts the same way - *here is a question, find the answer.* RuleBreakers does the opposite: a child is dropped into a small broken world with **no question at all**. They have to notice what's wrong, discover the hidden mathematical rule, repair the world, and explain how they knew. Then an AI builds the next world specifically to test the rule they just stated and sometimes nothing is broken at all, because knowing when *not* to "fix" something is part of really understanding it.
 
-> *"The pieces have to be exactly the same size."* → world upgraded. Now here's a world where the
-> pieces are equal but there's a whole chunk of the bar left uncut. Still confident?
+> *"The pieces have to be exactly the same size."* -> world upgraded. Now here's a world where the pieces are equal but there's a whole chunk of the bar left uncut. Still confident?
 
 ---
 
 ## Why this is different
 
 Most AI learning products put the AI in the tutor's seat, asking questions and grading answers.
-RuleBreakers puts the AI somewhere more interesting: **it listens to how a child explains their own
-reasoning, and invents the smallest possible scenario that would break that reasoning if it's
-incomplete.** That's not a chatbot and it's not a quiz generator — it's a live, running hypothesis
+RuleBreakers puts the AI somewhere more interesting: **it listens to how a child explains their own reasoning, and invents the smallest possible scenario that would break that reasoning if it's incomplete.** 
+That's not a chatbot and it's not a quiz generator - it's a live, running hypothesis
 about what a specific child currently believes, continuously tested against reality.
 
-- **The child is never given a question.** They notice a fault, form a rule in their own words,
-  and get to prove they can tell the difference between "broken" and "actually fine."
-- **The AI never grades anything.** A deterministic engine owns every fact about whether a fix is
-  correct, whether a rule is complete, and whether the child has generalised the concept. The LLM's
-  only job, ever, is reading language.
-- **Evidence, not scores.** The output for a parent or tutor isn't a percentage — it's the child's
-  own words, in order, showing how their model of the concept changed.
+- **The child is never given a question.** They notice a fault, form a rule in their own words, and get to prove they can tell the difference between "broken" and "actually fine."
+- **The AI never grades anything.** A deterministic engine owns every fact about whether a fix is correct, whether a rule is complete, and whether the child has generalised the concept. The LLM's only job, ever, is reading language.
+- **Evidence, not scores.** The output for a parent or tutor isn't a percentage, it's the child's own words, in order, showing how their model of the concept changed.
 
 ## The loop
 
 ```
-👀 NOTICE            something isn't right — no hint is given
+👀 NOTICE            something isn't right - no hint is given
     ↓
 🧠 DISCOVER          figure out the hidden mathematical rule
     ↓
@@ -50,7 +39,7 @@ about what a specific child currently believes, continuously tested against real
 
 ## The Hypothesis Engine
 
-The genuinely novel AI job here isn't generating math problems — it's **inventing the smallest
+The genuinely novel AI job here isn't generating math problems - it's **inventing the smallest
 counterexample that exposes the boundary of a child's understanding**, and doing it without ever
 being trusted to grade anything.
 
@@ -63,8 +52,7 @@ being trusted to grade anything.
 | **Mastery** | Whether a fix is correct and whether the child has generalised is decided entirely by code | `src/lib/mastery.ts` |
 
 The LLM is checked automatically in this order: **Groq** (free tier, no billing required) →
-**OpenAI** → **fully offline deterministic fallback**. The game is 100% playable with no API key at
-all; a real LLM key just makes the "read what the child said" step smarter.
+**OpenAI** → **fully offline deterministic fallback**. The game is 100% playable with no API key at all; a real LLM key just makes the "read what the child said" step smarter.
 
 ## Regions
 
@@ -116,24 +104,12 @@ the browser's `localStorage` only.
 ## Quality bar
 
 - 21 unit tests covering every world template, the counterexample selector, the offline
-  classifier, and the mastery state machine
-- Full browser end-to-end tests: all three regions plus the Glitch Boss, played start to finish,
-  verified against both the offline fallback and live Groq classification
-- Mobile-viewport pass (no horizontal overflow, 44px+ touch targets, reduced-motion respected)
+  classifier, and the mastery state machine.
+- Full browser end-to-end tests: all three regions plus the Glitch Boss, played start to finish, verified against both the offline fallback and live Groq classification.
+- Mobile-viewport pass (no horizontal overflow, 44px+ touch targets, reduced-motion respected).
 - Every AI response is schema-validated (Zod) with a retry-then-fallback path — a malformed or
-  missing model response never breaks the game
+  missing model response never breaks the game.
 
 ## Nerdy relevance
 
-RuleBreakers watches a child's mental model evolve and captures it as evidence — which facets they
-discovered, in what order, in their own words — instead of a score. In a Live + AI learning system,
-that's the bridge between the two halves: not *what the learner got wrong*, but *how they think and
-what moved them forward*, handed to a human tutor before they even say hello.
-
-## Disclosures
-
-See [`THIRD_PARTY_AND_AI_DISCLOSURES.md`](./THIRD_PARTY_AND_AI_DISCLOSURES.md) for AI-use
-disclosure and third-party licenses (all permissive; no GPL/LGPL/AGPL/SSPL dependencies). No real
-student data is used anywhere in development or testing.
-
-See [`DEMO_SCRIPT.md`](./DEMO_SCRIPT.md) for the recorded-demo shot list.
+RuleBreakers watches a child's mental model evolve and captures it as evidence — which facets they discovered, in what order, in their own words — instead of a score. In a Live + AI learning system, that's the bridge between the two halves: not *what the learner got wrong*, but *how they think and what moved them forward*, handed to a human tutor before they even say hello.
