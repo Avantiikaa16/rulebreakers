@@ -1,53 +1,28 @@
 # Third-Party & AI Disclosures — RuleBreakers
 
-Maintained throughout development for the Nerdy AI Hackathon Challenge.
+Per Nerdy AI Hackathon Challenge terms §7.6.
 
 ## AI assistance
 
-- **Claude (Anthropic)** was used as a coding assistant to help write this application.
-- At runtime, server-side only, one LLM call classifies which *facets* of a concept the child's
-  free-text explanation expresses — nothing else. The provider is selected automatically:
-  **Groq** (configurable via `GROQ_MODEL`, default `openai/gpt-oss-20b`) if
-  `GROQ_API_KEY` is set, otherwise **OpenAI** (`gpt-4o-mini` by default, configurable via
-  `OPENAI_MODEL`) if `OPENAI_API_KEY` is set. The model never renders world state, never decides
-  whether a fix is correct, and never decides mastery — all of that is deterministic engine code
-  (`src/lib/worlds`, `src/lib/mastery.ts`). Every model response is validated with Zod
-  (`src/lib/schemas.ts`); on any failure the app falls back to a deterministic keyword classifier
-  (`src/lib/hypothesis/classify-local.ts`) and stays fully playable with no API key at all.
-- The same LLM call is also used, optionally, to rephrase the deterministic Tutor Handoff
-  Report into tutor-friendly prose. The structured findings are unchanged; a template fallback is
-  always present.
+Built with **Claude (Anthropic)** as a coding assistant. At runtime, one server-side LLM call
+classifies which facets of a concept a child's explanation covers — it never grades and never
+decides game state (`src/lib/worlds`, `src/lib/mastery.ts` do that deterministically). Provider:
+**Groq** if `GROQ_API_KEY` is set, else **OpenAI**, else a deterministic offline classifier
+(`src/lib/hypothesis/classify-local.ts`) — fully playable with no key. The same LLM optionally
+rephrases the Tutor Report; a template fallback always exists.
 
-## Runtime dependencies (all permissive licenses)
+## Dependencies — all permissive, no copyleft
 
-| Package | License | Use |
-|---|---|---|
-| next | MIT | app framework |
-| react, react-dom | MIT | UI |
-| openai | Apache-2.0 | server-side LLM calls (used as the client for both Groq and OpenAI, since Groq's API is OpenAI-compatible) |
-| zod | MIT | schema validation of all external/AI data |
-| zustand | MIT | game state |
-| framer-motion | MIT | animation |
-
-Dev-only: typescript, eslint, vitest, @vitejs/plugin-react, jsdom, tailwindcss — all MIT.
-
-No GPL / LGPL / AGPL / SSPL or other reciprocal-license dependencies.
+`next`, `react`/`react-dom`, `zod`, `zustand`, `framer-motion` (MIT) · `openai` (Apache-2.0, used
+as the client for both Groq and OpenAI). Dev-only: typescript, eslint, vitest, tailwindcss — MIT.
+No GPL / LGPL / AGPL / SSPL dependencies.
 
 ## Assets
 
-- All UI sounds are generated at runtime with the Web Audio API (`src/lib/sound.ts`) — no audio files.
-- Character voices use the browser's built-in `speechSynthesis` — no third-party TTS.
-- All visuals are CSS / SVG / system emoji. No third-party images, icons, or fonts beyond
-  **Fredoka** (Google Fonts, OFL).
+No third-party audio, images, or icons. Sound is generated live via the Web Audio API; character
+voices use the browser's built-in `speechSynthesis`. Fonts: system + **Fredoka** (Google Fonts, OFL).
 
 ## Data
 
-- No real student data is used. All content is synthetic and authored.
-- No accounts, no personal data collection. The optional "what should I call you?" nickname and
-  avatar picker (`src/lib/player.ts`) is stored only in the browser's `localStorage`, is never sent
-  to any API — including the classification and tutor-report routes — and can be cleared any time
-  via "Not you?" on the island screen. Progress and session summaries are likewise stored only in
-  `localStorage` and never transmitted.
-- No camera, microphone-recording upload, biometric identifiers, or speaker/face identification.
-  (Optional speech-to-text uses the browser's on-device Web Speech API for the "how did you know?"
-  step; the transcript is editable and only its text is sent to the classification endpoint.)
+No real student data, no accounts. Progress, session summaries, and the optional nickname/avatar
+(`src/lib/player.ts`) live only in the browser's `localStorage` and are never transmitted.
