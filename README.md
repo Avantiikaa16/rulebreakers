@@ -4,6 +4,8 @@
 
 **A K–5 math game built for the [Nerdy AI Hackathon Challenge](https://hackathon.nerdy.com/).**
 
+**🔗 Live demo: [rulebreakers-self.vercel.app](https://rulebreakers-self.vercel.app/)**
+
 Every math app starts the same way - *here is a question, find the answer.* RuleBreakers does the opposite: a child is dropped into a small broken world with **no question at all**. They have to notice what's wrong, discover the hidden mathematical rule, repair the world, and explain how they knew. Then an AI builds the next world specifically to test the rule they just stated and sometimes nothing is broken at all, because knowing when *not* to "fix" something is part of really understanding it.
 
 > *"The pieces have to be exactly the same size."* -> world upgraded. Now here's a world where the pieces are equal but there's a whole chunk of the bar left uncut. Still confident?
